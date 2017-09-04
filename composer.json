@@ -1,0 +1,12 @@
+{
+    "name": "deeptruth/mailchimp-api",
+    "description": "API package for Mailchimp",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Aaron Tolentino",
+            "email": "aarontolentino123@gmail.com"
+        }
+    ],
+    "require": {}
+}
