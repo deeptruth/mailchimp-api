@@ -2,11 +2,20 @@
     "name": "deeptruth/mailchimp-api",
     "description": "API package for Mailchimp",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Aaron Tolentino",
             "email": "aarontolentino123@gmail.com"
         }
     ],
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "Deeptruth\\Mailchimp\\": "deeptruth/mailchimp-api/src"
+        }
+    },
     "require": {}
 }
