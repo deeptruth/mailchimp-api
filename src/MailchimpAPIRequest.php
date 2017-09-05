@@ -12,8 +12,20 @@ use Exception;
 class MailchimpAPIRequest
 {
 
-	protected $api_key;        // API key or token generated in Mailchimp Account
-	protected $api_endpoint;   // API endpoint URL
+    /**
+     * API key or token generated in Mailchimp Account
+     */
+	protected $api_key;
+
+    /**
+     * API endpoint URL
+     */
+    protected $api_endpoint;
+
+    /**
+     * API endpoint version
+     */
+	protected $api_version = '3.0';
 
     /**
      * Prepare API Request
@@ -40,7 +52,7 @@ class MailchimpAPIRequest
         }
 
         $this->setAPIKey($api_key);
-        $this->setAPIEndpoint("https://$api_key_parts[1].api.mailchimp.com/3.0");
+        $this->setAPIEndpoint("https://$api_key_parts[1].api.mailchimp.com/".$this->api_version);
     }
 
     /**
