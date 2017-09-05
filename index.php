@@ -32,7 +32,7 @@ $a = new MailchimpAPI("81a905c2bd6d5d25ff4d6caa73e64597-us16");
 
 // Get All Campaign
 echo "<pre>";
-var_dump($a->getAllCampaigns());
+var_dump($a->campaign()->all());
 
 /*---------------------------------------------------------*/
 
