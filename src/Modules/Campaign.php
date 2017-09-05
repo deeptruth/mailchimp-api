@@ -3,9 +3,6 @@ namespace Deeptruth\Mailchimp\Modules;
 
 use Deeptruth\Mailchimp\MailchimpAPIRequest;
 use Deeptruth\Mailchimp\Contracts\ModulesContract;
-/**
-* Campaign Trait CRUD
-*/
 
 class Campaign extends MailchimpAPIRequest implements ModulesContract
 {
@@ -69,6 +66,20 @@ class Campaign extends MailchimpAPIRequest implements ModulesContract
 	public function getByID($id = 0)
 	{
 		$campaign = $this->makeRequest('get',$this->modulename."/$id");
+		return $campaign;
+	}
+
+	/**
+	 * Send Campaign
+	 * 
+	 * @param Int $id 	ID of campaign
+	 *
+	 * @return Array campaign
+	 */
+	public function send($id = 0)
+	{
+		$campaign = $this->makeRequest('post',$this->modulename."/$id/actions/send");
+
 		return $campaign;
 	}
 	
