@@ -1,8 +1,6 @@
 <?php
 namespace Deeptruth\Mailchimp;
 
-use Deeptruth\Mailchimp\Modules\Campaign;
-use Deeptruth\Mailchimp\Traits\Subscribers;
 use Exception;
 
 /**
@@ -26,14 +24,26 @@ class MailchimpAPI
     }
 
     /**
-     * Campaign module
+     * Return a a module class when calling a valid module
+     * 
+     * @param String $method        Method name which equivalent to lowercased Class
      *
-     * @return Campaign Instance
+     * @return Object               
+     * 
      */
-    public function campaign(){
+    public function __call($method, $params) {
+        $class  = ucfirst($method);
+        $module = __DIR__.'/Modules/'.$class.'.php';
 
-        return new Campaign($this->getAPIKey());
+        if (file_exists($module)) {
+            $class = "Deeptruth\\Mailchimp\\Modules\\$class";
+            return new $class($this->getAPIKey());
+        }
+
+        throw new Exception("Error Processing Request. Module class not found", 1);
+        
     }
+
 
     /**
      * Get API Key
