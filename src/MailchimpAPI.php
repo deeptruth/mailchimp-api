@@ -37,6 +37,11 @@ class MailchimpAPI
 
         if (file_exists($module)) {
             $class = "Deeptruth\\Mailchimp\\Modules\\$class";
+
+            if(count($params) > 0){
+                return new $class($this->getAPIKey(), $params);
+            }
+
             return new $class($this->getAPIKey());
         }
 

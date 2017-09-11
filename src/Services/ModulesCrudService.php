@@ -6,9 +6,9 @@ use Deeptruth\Mailchimp\Contracts\ModulesCrudContract;
 
 class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContract
 {
-	protected $modulename = '';
+	
 	/**
-	 * Make Campaign. To implement validation of required keys
+	 * Make Module. To implement validation of required keys
 	 * 
 	 * @param Array $args 	Array of arguments from API documentation of Mailchimp. 
 	 *
@@ -16,71 +16,58 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function store($args = [])
 	{
-		// var_dump($args);exit;
-		return $this->makeRequest('post',$this->modulename,$args);
+		return $this->makeRequest('post',$this->getModuleName(),$args);
 	}
 
 	/**
-	 * Update Campaign
+	 * Update Module
 	 *
-	 * @param Int $id 	ID of campaign
+	 * @param Int $id 	ID of module
 	 * @param Array $args 	Array of arguments from API documentation of Mailchimp. 
 	 * 
 	 *
 	 */
 	public function update($id = 0, $args = [])
 	{
-		return $this->makeRequest('patch',$this->modulename."/$id",$args);
+		return $this->makeRequest('patch',$this->getModuleName()."/$id",$args);
 	}
 
 	/**
-	 * Delete Campaign
+	 * Delete Module
 	 *
-	 * @param Int $id 	ID of campaign
+	 * @param Int $id 	ID of module
 	 *
 	 *
 	 */
 	public function delete($id = 0)
 	{
-		return $this->makeRequest('delete',$this->modulename."/$id",$id);
+		return $this->makeRequest('delete',$this->getModuleName()."/$id",$id);
 	}
 
 	/**
-	 * Get all Campaign
+	 * Get all Module
 	 *
-	 * @return Array campaigns
+	 * @return Array module
 	 */
 	public function all()
 	{
-		$campaigns = $this->makeRequest('get',$this->modulename);
-		return $campaigns[$this->modulename];
+		$module = $this->makeRequest('get',$this->getModuleName());
+		return $module;
 	}
 
 	/**
-	 * Get Campaign by ID
+	 * Get Module by ID
 	 * 
-	 * @param Int $id 	ID of campaign
+	 * @param Int $id 	ID of module
 	 *
-	 * @return Array campaign
+	 * @return Array module
 	 */
 	public function getByID($id = 0)
 	{
-		$campaign = $this->makeRequest('get',$this->modulename."/$id");
-		return $campaign;
+		$module = $this->makeRequest('get',$this->getModuleName()."/$id");
+		return $module;
 	}
 
-	/**
-	 * Send Campaign
-	 * 
-	 * @param Int $id 	ID of campaign
-	 *
-	 * @return Array campaign
-	 */
-	public function send($id = 0)
-	{
-		$campaign = $this->makeRequest('post',$this->modulename."/$id/actions/send");
 
-		return $campaign;
-	}
 	
 }

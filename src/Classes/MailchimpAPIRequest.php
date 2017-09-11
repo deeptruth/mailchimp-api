@@ -25,7 +25,12 @@ class MailchimpAPIRequest
     /**
      * API endpoint version
      */
-	protected $api_version = '3.0';
+    protected $api_version = '3.0';
+
+    /**
+     * Module name
+     */
+	protected $modulename = '';
 
     /**
      * Prepare API Request
@@ -34,6 +39,11 @@ class MailchimpAPIRequest
      */
     public function __construct($api_key)
     {
+        if(empty($this->modulename)){
+
+            throw new \Exception("Please provide modulename", 1);
+            
+        }
         $this->prepareAPIRequest($api_key);
     }
 
@@ -200,6 +210,26 @@ class MailchimpAPIRequest
     public function setAPIEndpoint($api_endpoint)
     {
         $this->api_endpoint = $api_endpoint;
+    }
+
+    /**
+     * Get ModuleName
+     *
+     * @return String $api_key
+     */
+    public function getModuleName()
+    {
+        return $this->modulename;   
+    }
+
+    /**
+     * Set API Endpoint
+     *
+     * @return void
+     */
+    public function setModuleName($modulename)
+    {
+        $this->modulename = $modulename;
     }
 
 }
