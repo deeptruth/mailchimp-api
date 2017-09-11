@@ -16,7 +16,7 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function store($args = [])
 	{
-		return $this->makeRequest('post',$this->getModuleName(),$args);
+		return $this->makeRequest('post',$this->getModuleRequestURI(),$args);
 	}
 
 	/**
@@ -29,7 +29,7 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function update($id = 0, $args = [])
 	{
-		return $this->makeRequest('patch',$this->getModuleName()."/$id",$args);
+		return $this->makeRequest('patch',$this->getModuleRequestURI()."/$id",$args);
 	}
 
 	/**
@@ -41,7 +41,7 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function delete($id = 0)
 	{
-		return $this->makeRequest('delete',$this->getModuleName()."/$id",$id);
+		return $this->makeRequest('delete',$this->getModuleRequestURI()."/$id",$id);
 	}
 
 	/**
@@ -51,8 +51,8 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function all()
 	{
-		$module = $this->makeRequest('get',$this->getModuleName());
-		return $module;
+		$module = $this->makeRequest('get',$this->getModuleRequestURI());
+		return $module[$this->getModuleName()];
 	}
 
 	/**
@@ -64,7 +64,7 @@ class ModulesCrudService extends MailchimpAPIRequest implements ModulesCrudContr
 	 */
 	public function getByID($id = 0)
 	{
-		$module = $this->makeRequest('get',$this->getModuleName()."/$id");
+		$module = $this->makeRequest('get',$this->getModuleRequestURI()."/$id");
 		return $module;
 	}
 

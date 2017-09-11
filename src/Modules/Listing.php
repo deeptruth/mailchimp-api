@@ -5,6 +5,6 @@ use Deeptruth\Mailchimp\Services\ModulesCrudService;
 
 class Listing extends ModulesCrudService
 {
-	protected $modulename = 'lists';
+	protected $module_name = 'lists';
 	
 }

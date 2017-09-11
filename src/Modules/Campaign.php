@@ -5,7 +5,7 @@ use Deeptruth\Mailchimp\Services\ModulesCrudService;
 
 class Campaign extends ModulesCrudService
 {
-	protected $modulename = 'campaigns';
+	protected $module_name = 'campaigns';
 
 	/**
 	 * Send Campaign
@@ -16,7 +16,7 @@ class Campaign extends ModulesCrudService
 	 */
 	public function send($id = 0)
 	{
-		$module = $this->makeRequest('post',$this->modulename."/$id/actions/send");
+		$module = $this->makeRequest('post',$this->getModuleName()."/$id/actions/send");
 
 		return $module;
 	}

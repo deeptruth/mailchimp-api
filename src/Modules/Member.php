@@ -5,22 +5,26 @@ use Deeptruth\Mailchimp\Services\ModulesCrudService;
 
 class Member extends ModulesCrudService
 {
-	protected $modulename = 'members';
+	protected $module_name = 'members';
 
 	/**
 	 * Set modulename with parent id
 	 */
 	public function __construct($api_key, $args)
 	{
-		$this->setModuleName($args);
+		$this->setModuleRequestURI($args);
 		parent::__construct($api_key);
 	}
 
 	/**
-	 * Overwrite set modulename with parent id
+	 * Overwrite setModuleRequestURI method with parent id
+	 *
+	 * @param Array $args 		Parameter of class. This is array for flexibility in other and future modules.
+	 *
+	 * @return void
 	 */
-	public function setModuleName($args){
+	public function setModuleRequestURI($args){
 		$parent_id = $args[0];
-		$this->modulename = "lists/$parent_id/members";
+		$this->module_request_uri = "lists/$parent_id/members";
 	}
 }

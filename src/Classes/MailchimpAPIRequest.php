@@ -30,7 +30,12 @@ class MailchimpAPIRequest
     /**
      * Module name
      */
-	protected $modulename = '';
+    protected $module_name = '';
+
+     /**
+     * Module name
+     */
+	protected $module_request_uri = '';
 
     /**
      * Prepare API Request
@@ -39,9 +44,15 @@ class MailchimpAPIRequest
      */
     public function __construct($api_key)
     {
-        if(empty($this->modulename)){
+        if(empty($this->getModuleName())){
 
             throw new \Exception("Please provide modulename", 1);
+            
+        }
+
+        if(empty($this->getModuleRequestURI())){
+
+            throw new \Exception("Please provide module request uri", 1);
             
         }
         $this->prepareAPIRequest($api_key);
@@ -213,24 +224,52 @@ class MailchimpAPIRequest
     }
 
     /**
-     * Get ModuleName
+     * Get module URI. If URI is not available use the module name instead
      *
-     * @return String $api_key
+     * @return String $module_request_uri
      */
-    public function getModuleName()
+    public function getModuleRequestURI()
     {
-        return $this->modulename;   
+        if(empty($this->module_request_uri)){
+
+            $this->module_request_uri = $this->getModuleName();
+        }
+
+        return $this->module_request_uri;   
     }
 
     /**
-     * Set API Endpoint
+     * Set module URI
+     *
+     * @param String $module_request_uri       URI of the request
      *
      * @return void
      */
-    public function setModuleName($modulename)
+    public function setModuleRequestURI($module_request_uri)
     {
-        $this->modulename = $modulename;
+        $this->module_request_uri = $module_request_uri;
+    }
+
+    /**
+     * Get module name
+     *
+     * @return String $module_name
+     */
+    public function getModuleName()
+    {
+        return $this->module_name;   
+    }
+
+    /**
+     * Set module name
+     *
+     * @param String $module_name       Modulename
+     *
+     * @return void
+     */
+    public function setModuleName($module_name)
+    {
+        $this->module_name = $module_name;
     }
 
 }
-
