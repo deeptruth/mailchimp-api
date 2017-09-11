@@ -20,5 +20,19 @@ class Campaign extends ModulesCrudService
 
 		return $module;
 	}
+
+	/**
+	 * Replicate Campaign
+	 * 
+	 * @param Int $id 	ID of module
+	 *
+	 * @return Array module
+	 */
+	public function replicate($id = 0)
+	{
+		$module = $this->makeRequest('post',$this->getModuleName()."/$id/actions/replicate");
+
+		return $module;
+	}
 	
 }
