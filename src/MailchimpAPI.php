@@ -32,8 +32,7 @@ class MailchimpAPI
      * @return Object               
      * 
      */
-    public function __call($method, $params) 
-    {
+    public function __call($method, $params) {
         $className  = ucfirst($method);
         $module = __DIR__.'/Modules/'.$className.'.php';
 
@@ -58,7 +57,7 @@ class MailchimpAPI
     {
         $class = "Deeptruth\\Mailchimp\\Modules\\$className";
         $reflectionClass = new \ReflectionClass($class);
-        
+
         if(count($params) > 0){
             return $reflectionClass->newInstanceArgs([$this->getAPIKey(), $params]);
         }
