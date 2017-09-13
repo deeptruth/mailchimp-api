@@ -27,26 +27,42 @@ class MailchimpAPI
      * Return a a module class when calling a valid module
      * 
      * @param String $method        Method name which equivalent to lowercased Class
+     * @param Array $params         Parameter method supplied upon calling
      *
      * @return Object               
      * 
      */
     public function __call($method, $params) {
-        $class  = ucfirst($method);
-        $module = __DIR__.'/Modules/'.$class.'.php';
+        $className  = ucfirst($method);
+        $module = __DIR__.'/Modules/'.$className.'.php';
 
         if (file_exists($module)) {
-            $class = "Deeptruth\\Mailchimp\\Modules\\$class";
-
-            if(count($params) > 0){
-                return new $class($this->getAPIKey(), $params);
-            }
-
-            return new $class($this->getAPIKey());
+            
+            return $this->buildModuleClass($className, $params);
         }
 
         throw new Exception("Error Processing Request. Module class not found", 1);
         
+    }
+
+    /**
+     * Build Module class through ReflectionClass
+     *
+     * @param String $className     ClassName of the module
+     * @param Array $params         Parameter method supplied upon calling _call magic method
+     *
+     * @return Object               
+     */
+    private function buildModuleClass($className, $params)
+    {
+        $class = "Deeptruth\\Mailchimp\\Modules\\$className";
+        $reflectionClass = new \ReflectionClass($class);
+
+        if(count($params) > 0){
+            return $reflectionClass->newInstanceArgs([$this->getAPIKey(), $params]);
+        }
+        
+        return $reflectionClass->newInstanceArgs([$this->getAPIKey()]);
     }
 
 
