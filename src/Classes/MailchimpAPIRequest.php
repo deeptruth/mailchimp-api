@@ -9,7 +9,7 @@ use Exception;
 * Mailchimp Package API
 */
 
-class MailchimpAPIRequest
+abstract class MailchimpAPIRequest
 {
 
     /**
