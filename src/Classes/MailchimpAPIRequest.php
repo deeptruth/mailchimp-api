@@ -33,7 +33,7 @@ abstract class MailchimpAPIRequest
     protected $module_name = '';
 
      /**
-     * Module name
+     * Module request uri
      */
 	protected $module_request_uri = '';
 
@@ -57,7 +57,7 @@ abstract class MailchimpAPIRequest
         }
         $this->prepareAPIRequest($api_key);
     }
-
+    
     /**
      * Prepare API Request before calling the makeRequest
      * 
