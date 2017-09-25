@@ -20,7 +20,7 @@ interface MailchimpAPIRequestContract{
 	 * 
 	 *
 	 */
-	public function update($id = 0, $args = []);
+	public function update($id = null, $args = []);
 
 	/**
 	 * Delete Module Data
@@ -28,7 +28,7 @@ interface MailchimpAPIRequestContract{
 	 * @param Int $id 	ID of Data
 	 *
 	 */
-	public function delete($id = 0);
+	public function delete($id = null);
 
 	/**
 	 * Get all Module Data
@@ -42,5 +42,5 @@ interface MailchimpAPIRequestContract{
 	 * 
 	 * @param Int $id 	ID of campaign
 	 */
-	public function find($id = 0);
+	public function find($id = null);
 }

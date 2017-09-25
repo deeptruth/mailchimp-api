@@ -334,8 +334,9 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      * 
      *
      */
-    public function update($id = 0, $args = [])
+    public function update($id = null, $args = [])
     {
+        $id = isset($id) ? $id : $this->getModuleID();
         return $this->makeRequest('patch',$this->getModuleRequestURI()."/$id",$args);
     }
 
@@ -346,8 +347,9 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      *
      */
-    public function delete($id = 0)
+    public function delete($id = null)
     {
+        $id = isset($id) ? $id : $this->getModuleID();
         return $this->makeRequest('delete',$this->getModuleRequestURI()."/$id",$id);
     }
 
@@ -369,8 +371,9 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      * @return Array module
      */
-    public function find($id = 0)
+    public function find($id = null)
     {
+        $id = isset($id) ? $id : $this->getModuleID();
         $module = $this->makeRequest('get',$this->getModuleRequestURI()."/$id");
         return $module;
     }
