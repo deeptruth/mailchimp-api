@@ -1,17 +1,20 @@
 <?php
 namespace Deeptruth\Mailchimp;
 
+use Deeptruth\Mailchimp\MailchimpContainer;
 use Exception;
 
 /**
 * Mailchimp Package API
 */
 
-class MailchimpAPI
+class MailchimpAPI extends MailchimpContainer
 {
-	
-
-    protected $api_key;        // API key or token generated in Mailchimp Account
+    /**
+     * API key or token generated in Mailchimp Account
+     * @var String
+     */
+    protected $api_key;
 
     /**
      * Prepare API Request
@@ -21,6 +24,10 @@ class MailchimpAPI
     public function __construct($api_key = "")
     {
         $this->setAPIKey($api_key);
+
+        $this->instance("mailchimp", $this);
+
+        self::setInstance($this);
     }
 
     /**
@@ -34,52 +41,21 @@ class MailchimpAPI
      */
     public function __call($method, $params) 
     {
-        return $this->buildModuleClass($method, $params);    
-    }
 
-
-    /**
-     * Static calling of method
-     *
-     * @param String $api_key
-     *
-     * @return Object
-     */
-    public static function make($api_key)
-    {
-        return new static($api_key);
-    }
-
-
-    /**
-     * Build Module class through ReflectionClass
-     *
-     * @param String $className     ClassName of the module
-     * @param Array $params         Parameter method supplied upon calling _call magic method
-     *
-     * @return Object               
-     */
-    private function buildModuleClass($method, $params)
-    {
-        $className  = ucfirst($method);
-        $module = __DIR__.'/Modules/'.$className.'.php';
-
-        if (file_exists($module)) {
-            
-            $class = "Deeptruth\\Mailchimp\\Modules\\$className";
-            $reflectionClass = new \ReflectionClass($class);
-
-            if(count($params) > 0){
-                return $reflectionClass->newInstanceArgs([$this->getAPIKey(), $params]);
-            }
-            
-            return $reflectionClass->newInstanceArgs([$this->getAPIKey()]);
+        if(count($params) > 1){
+            throw new Exception("Error Processing Request. Module class not found", 1);            
         }
 
+        $className  = ucfirst($method);
+        $module = __DIR__."/$className/$className.php";
+        $module_id = isset($params[0]) ? $params[0] : null;
+        if (file_exists($module)) {
+            $class = "Deeptruth\\Mailchimp\\$className\\$className";
+            return $this->make($class, array($this->getAPIKey(), $module_id));
+        }   
+
         throw new Exception("Error Processing Request. Module class not found", 1);
-
     }
-
 
     /**
      * Get API Key
@@ -102,4 +78,3 @@ class MailchimpAPI
     }
 
 }
-

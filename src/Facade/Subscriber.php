@@ -5,7 +5,7 @@ use Deeptruth\Mailchimp\Facade\MailchimpFacade as Facade;
 /**
 * 
 */
-class Template extends Facade
+class Subscriber extends Facade
 {
 	/**
 	 * Get the registered name of the component.
@@ -16,6 +16,6 @@ class Template extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'Deeptruth\\Mailchimp\\Template\\Template';
+		return 'Deeptruth\\Mailchimp\\Subscriber\\Subscriber';
 	}
 }
