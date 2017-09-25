@@ -1,8 +1,8 @@
 <?php
 namespace Deeptruth\Mailchimp;
 
-use Deeptruth\Mailchimp\MailchimpContainer;
 use Exception;
+use Deeptruth\Mailchimp\MailchimpContainer
 
 /**
 * Mailchimp Package API

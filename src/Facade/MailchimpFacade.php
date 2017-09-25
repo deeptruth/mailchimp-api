@@ -61,7 +61,8 @@ abstract class MailchimpFacade
 	 * Build class through namespace
 	 * @param [type] $name [description]
 	 */
-	private static function build($name){
+	private static function build($name)
+	{
 		$reflectionClass = new ReflectionClass($name);
 		return $reflectionClass->newInstanceArgs();
 	}
