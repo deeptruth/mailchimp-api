@@ -1,6 +1,6 @@
 <?php
-namespace Deeptruth\Mailchimp\Subscriber;
 
+namespace Deeptruth\Mailchimp\Subscriber;
 
 use \Exception;
 use Deeptruth\Mailchimp\Subscriber\Member;
@@ -9,28 +9,28 @@ use Deeptruth\Mailchimp\MailchimpAPIRequest;
 
 class Subscriber extends MailchimpAPIRequest
 {
-	protected $module_name = 'lists';
 
-	/**
-	 * Member of a list. Build through container and set the module URI
-	 * @return Member instance
-	 */
+    protected $module_name = 'lists';
 
-	public function member()
-	{
+    /**
+     * Member of a list. Build through container and set the module URI
+     * @return Member instance
+     */
+    public function member()
+    {
 
-		$container = MailchimpContainer::getInstance() ? : new MailchimpContainer();
+        $container = MailchimpContainer::getInstance() ?: new MailchimpContainer();
 
-		if(! $this->getModuleID()){
-			
-			throw new Exception("Subscriber id not declared");
-			
-		}
+        if (!$this->getModuleID()) {
 
-		$memberClass = $container->make("Deeptruth\\Mailchimp\\Subscriber\\Member", array($this->getAPIKey(),$this->getModuleID()));
+            throw new Exception("Subscriber id not declared");
+        }
 
-       	$memberClass->setModuleRequestURI($this->module_name."/". $this->getModuleID() ."/members");
+        $memberClass = $container->make("Deeptruth\\Mailchimp\\Subscriber\\Member", array($this->getAPIKey(), $this->getModuleID()));
 
-       	return $memberClass;
-	}
+        $memberClass->setModuleRequestURI($this->module_name . "/" . $this->getModuleID() . "/members");
+
+        return $memberClass;
+    }
+
 }

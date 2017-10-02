@@ -1,22 +1,20 @@
 <?php
+
 namespace Deeptruth\Mailchimp;
 
 use Exception;
-use Deeptruth\Mailchimp\Traits\Campaign;
-use Deeptruth\Mailchimp\Traits\Subscribers;
 use Deeptruth\Mailchimp\Contracts\MailchimpAPIRequestContract;
 
 /**
-* Mailchimp Package API
-*/
-
+ * Mailchimp Package API
+ */
 abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
 {
 
     /**
      * API key or token generated in Mailchimp Account
      */
-	protected $api_key;
+    protected $api_key;
 
     /**
      * API endpoint URL
@@ -33,7 +31,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     protected $module_name;
 
-     /**
+    /**
      * Module request uri
      */
     protected $module_request_uri;
@@ -41,7 +39,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
     /**
      * Module ID for the module that has child to be inserted in the URI
      */
-	protected $module_id;
+    protected $module_id;
 
     /**
      * Prepare API Request
@@ -50,21 +48,19 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function __construct($api_key = "")
     {
-        if(empty($this->getModuleName())){
+        if (empty($this->getModuleName())) {
 
             throw new \Exception("Please provide modulename", 1);
-            
         }
 
-        if(empty($this->getModuleRequestURI())){
+        if (empty($this->getModuleRequestURI())) {
 
             throw new \Exception("Please provide module request uri", 1);
-            
         }
 
         $this->setAPIKey($api_key);
     }
-    
+
     /**
      * Initialize mailchimp API
      * @return [type] [description]
@@ -87,11 +83,11 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
         $api_key = $this->getAPIKey();
 
         $api_key_parts = "";
-        if(count($api_key_parts = explode("-", $api_key)) != 2){
+        if (count($api_key_parts = explode("-", $api_key)) != 2) {
             throw new Exception("Invalid API Key");
         }
-        
-        $this->setAPIEndpoint("https://$api_key_parts[1].api.mailchimp.com/".$this->api_version);
+
+        $this->setAPIEndpoint("https://$api_key_parts[1].api.mailchimp.com/" . $this->api_version);
     }
 
     /**
@@ -103,7 +99,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      * @return  Array                Body of curl
      */
-	protected function makeRequest($http_verb, $url_params, $args = [])
+    protected function makeRequest($http_verb, $url_params, $args = [])
     {
         if (!function_exists('curl_init') || !function_exists('curl_setopt')) {
             throw new Exception("cURL support is required, but can't be found.");
@@ -111,7 +107,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
 
         $this->prepareAPIRequest();
 
-        $url = $this->getAPIEndpoint()."/$url_params";
+        $url = $this->getAPIEndpoint() . "/$url_params";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -128,7 +124,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
         $this->prepareCurlMethodAndParameters($ch, $url, $args, $http_verb);
-        
+
         $response_body = $this->prepareResponse($ch);
 
         curl_close($ch);
@@ -143,7 +139,8 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      * @return  void
      */
-    private function prepareCurlMethodAndParameters(&$ch, $url, $args, $http_verb){
+    private function prepareCurlMethodAndParameters(&$ch, $url, $args, $http_verb)
+    {
         switch ($http_verb) {
             case 'post':
                 curl_setopt($ch, CURLOPT_POST, true);
@@ -167,7 +164,6 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
         }
     }
 
-
     /**
      * Set Post fields
      *
@@ -176,12 +172,11 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      * @return void
      */
-	private function addRequestArgs(&$ch, $data)
+    private function addRequestArgs(&$ch, $data)
     {
         $encoded = json_encode($data);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
     }
-
 
     /**
      * Prepare Response 
@@ -190,16 +185,17 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      *
      * @return Array $body  Response body of CURL
      */
-    private function prepareResponse(&$ch){
+    private function prepareResponse(&$ch)
+    {
         $response_content = curl_exec($ch);
-        
+
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 
         $header = substr($response_content, 0, $header_size);
         $body = substr($response_content, $header_size);
 
-        $body = json_decode($body,true);
-        
+        $body = json_decode($body, true);
+
         return $body;
     }
 
@@ -210,7 +206,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function getAPIKey()
     {
-        return $this->api_key;   
+        return $this->api_key;
     }
 
     /**
@@ -230,7 +226,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function getAPIEndpoint()
     {
-        return $this->api_endpoint;   
+        return $this->api_endpoint;
     }
 
     /**
@@ -250,12 +246,12 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function getModuleRequestURI()
     {
-        if(empty($this->module_request_uri)){
+        if (empty($this->module_request_uri)) {
 
             $this->module_request_uri = $this->getModuleName();
         }
 
-        return $this->module_request_uri;   
+        return $this->module_request_uri;
     }
 
     /**
@@ -277,7 +273,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function getModuleName()
     {
-        return $this->module_name;   
+        return $this->module_name;
     }
 
     /**
@@ -299,7 +295,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function getModuleID()
     {
-        return $this->module_id;   
+        return $this->module_id;
     }
 
     /**
@@ -323,7 +319,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function store($args = [])
     {
-        return $this->makeRequest('post',$this->getModuleRequestURI(),$args);
+        return $this->makeRequest('post', $this->getModuleRequestURI(), $args);
     }
 
     /**
@@ -337,7 +333,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
     public function update($id = null, $args = [])
     {
         $id = isset($id) ? $id : $this->getModuleID();
-        return $this->makeRequest('patch',$this->getModuleRequestURI()."/$id",$args);
+        return $this->makeRequest('patch', $this->getModuleRequestURI() . "/$id", $args);
     }
 
     /**
@@ -350,7 +346,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
     public function delete($id = null)
     {
         $id = isset($id) ? $id : $this->getModuleID();
-        return $this->makeRequest('delete',$this->getModuleRequestURI()."/$id",$id);
+        return $this->makeRequest('delete', $this->getModuleRequestURI() . "/$id", $id);
     }
 
     /**
@@ -360,7 +356,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
      */
     public function all()
     {
-        $module = $this->makeRequest('get',$this->getModuleRequestURI());
+        $module = $this->makeRequest('get', $this->getModuleRequestURI());
         return $module[$this->getModuleName()];
     }
 
@@ -374,7 +370,7 @@ abstract class MailchimpAPIRequest implements MailchimpAPIRequestContract
     public function find($id = null)
     {
         $id = isset($id) ? $id : $this->getModuleID();
-        $module = $this->makeRequest('get',$this->getModuleRequestURI()."/$id");
+        $module = $this->makeRequest('get', $this->getModuleRequestURI() . "/$id");
         return $module;
     }
 
